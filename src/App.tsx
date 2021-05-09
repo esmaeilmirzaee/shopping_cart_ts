@@ -32,7 +32,22 @@ const App = () => {
   const [cartItems, setCartItems] = useState([] as CartItemType[])
   let {isLoading, error, data} = useQuery<CartItemType[]>('products', getProducts)
 
-  const handleAddItemToCart = (clickedItem:CartItemType) => null;
+  const handleAddItemToCart = (clickedItem: CartItemType) => {
+    setCartItems(prev => {
+      // Is the item already added to the cart?
+      const isItemInCart = prev.find(item => item.id === clickedItem.id);
+
+      if (isItemInCart) {
+        return prev.map(item => 
+          item.id === clickedItem.id 
+          ? {...item, amount: item.amount + 1}
+          : item
+        );
+      }
+
+      return [...prev, {...clickedItem, amount: 1}];
+    });
+  };
 
   const handleRemoveItemFromCart = () => null;
 
