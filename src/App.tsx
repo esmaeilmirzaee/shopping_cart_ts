@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useQuery} from 'react-query'
 import axios from 'axios'
 
@@ -9,6 +9,7 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import Badge from '@material-ui/core/Badge'
 
 import {Wrapper} from './App.styles'
+import Item from './components/item/Item'
 
 // Types
 export type CartItemType = {
@@ -22,20 +23,29 @@ export type CartItemType = {
 }
 
 const getProducts = async ():Promise<CartItemType[]> => 
-  await axios.get('https://fakestoreapi.com/products')
+  await (await fetch('https://fakestoreapi.com/products')).json()
 
 
 const App = () => {
-  const {data, isLoading, error} = useQuery<CartItemType[]>('products', getProducts)
-  console.log(data)
+  let {isLoading, error, data} = useQuery<CartItemType[]>('products', getProducts)
 
-  const handleAddItemToCart = () => null;
+  const handleAddItemToCart = (clickedItem:CartItemType) => null;
 
   const handleRemoveItemFromCart = () => null;
 
+  if (isLoading) return <LinearProgress />
+
+  if (error) return <div>Something went wrong...</div>
+
   return (
     <Wrapper>
-      <h1>Start</h1>
+      <Grid container spacing={3}>
+        {data?.map(i => (
+          <Grid item key={i.id} xs={12} sm={4}>
+            <Item item={i} handleAddItemToCart={handleAddItemToCart} />
+          </Grid>
+        ))}
+      </Grid>
     </Wrapper>
   );
 }
