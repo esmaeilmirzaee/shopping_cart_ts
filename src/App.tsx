@@ -10,6 +10,7 @@ import Badge from '@material-ui/core/Badge'
 
 import {Wrapper, StyledButton} from './App.styles'
 import Item from './components/item/Item'
+import Cart from './components/cart/Cart'
 
 // Types
 export type CartItemType = {
@@ -44,6 +45,8 @@ const App = () => {
   return (
     <Wrapper>
       <Drawer anchor='right' open={isCartOpen} onClose={()=>setIsCartOpen(false)}>
+        <Cart cartItems={cartItems} addToCart={handleAddItemToCart}
+        removeFromCart={handleRemoveItemFromCart} />
       </Drawer>
         <StyledButton onClick={()=>setIsCartOpen(true)}>
           <Badge badgeContent={getTotalItemsInCart(cartItems)} color='error'>
