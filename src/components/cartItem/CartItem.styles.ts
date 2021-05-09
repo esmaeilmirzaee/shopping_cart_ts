@@ -11,8 +11,15 @@ export const Wrapper = styled.div`
         flex: 1;
     }
 
-    .information, .buttons {
+    .information {
         display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .amount, .buttons {
+        display: flex;
+        flex-direction: row;
         justify-content: space-between;
     }
 
